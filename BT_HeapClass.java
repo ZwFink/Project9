@@ -71,7 +71,19 @@ public class BT_HeapClass
      */
    public void addItem( char dataChar )
    {
-      // TODO: implement code for addItem
+       NodeClass newNode = new NodeClass( dataChar );
+       if( heapHead == null )
+       {
+           heapHead = newNode;
+       }
+
+       else
+       {
+           int targetLevel = findLeftHeight( heapHead );
+           heapHead = addItemHelper( newNode, heapHead.leftChildRef,
+                                    targetLevel, 0 );
+       }
+
    }
 
     /**
@@ -88,8 +100,30 @@ public class BT_HeapClass
    private NodeClass addItemHelper( NodeClass newItem, NodeClass localRef,
                                     int targetLevel, int currentLevel )
    {
-        // TODO: implemend code for this method
-       return null;
+      if( targetLevel == currentLevel )
+      {
+          return newItem;
+      }
+
+      if( ( currentLevel + 1 ) == targetLevel )
+      {
+         newItem.parentRef = localRef;
+      }
+
+      if( findLeftHeight( localRef ) >
+          findRightHeight( localRef )
+        )
+      {
+          localRef.rightChildRef = addItemHelper( newItem, localRef.rightChildRef,
+                                targetLevel, currentLevel + 1 );
+      }
+
+      else
+      {
+          localRef.leftChildRef = addItemHelper( newItem, localRef.leftChildRef,
+                                                 targetLevel, currentLevel + 1 );
+      }
+      return localRef;
    }
 
     /**
