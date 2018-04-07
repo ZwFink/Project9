@@ -22,7 +22,7 @@ public class BT_HeapClass
            dataValue = inData;
 
            parentRef = null;
-           leftChildRef = null
+           leftChildRef = null;
            rightChildRef = null;
 
        }
@@ -72,6 +72,8 @@ public class BT_HeapClass
    public void addItem( char dataChar )
    {
        NodeClass newNode = new NodeClass( dataChar );
+       int targetLevel;
+
        if( heapHead == null )
        {
            heapHead = newNode;
@@ -79,8 +81,17 @@ public class BT_HeapClass
 
        else
        {
-           int targetLevel = findLeftHeight( heapHead );
-           heapHead = addItemHelper( newNode, heapHead.leftChildRef,
+           if( findRightHeight( heapHead ) == findLeftHeight( heapHead ))
+           {
+               targetLevel = findLeftHeight( heapHead ) + 1;
+           }
+
+           else
+           {
+               targetLevel = findLeftHeight( heapHead );
+           }
+
+           addItemHelper( newNode, heapHead,
                                     targetLevel, 0 );
        }
 
@@ -100,30 +111,42 @@ public class BT_HeapClass
    private NodeClass addItemHelper( NodeClass newItem, NodeClass localRef,
                                     int targetLevel, int currentLevel )
    {
-      if( targetLevel == currentLevel )
+      if( ( currentLevel + 1 ) == targetLevel )
+      {
+          if ( localRef.rightChildRef == null)
+          {
+              if (localRef.leftChildRef == null)
+              {
+                  localRef.leftChildRef = newItem;
+                  newItem.parentRef = localRef;
+
+                  return newItem;
+              }
+
+              localRef.rightChildRef = newItem;
+              newItem.parentRef = localRef;
+
+              return newItem;
+          }
+          else
+          {
+              return null;
+          }
+      }
+
+      NodeClass leftChildResult = addItemHelper( newItem, localRef.leftChildRef,
+                     targetLevel, currentLevel + 1 );
+      if( leftChildResult != null )
       {
           return newItem;
       }
+      NodeClass rightChildResult = addItemHelper( newItem, localRef.rightChildRef,
+                     targetLevel, currentLevel + 1 );
 
-      if( ( currentLevel + 1 ) == targetLevel )
-      {
-         newItem.parentRef = localRef;
-      }
 
-      if( findLeftHeight( localRef ) >
-          findRightHeight( localRef )
-        )
-      {
-          localRef.rightChildRef = addItemHelper( newItem, localRef.rightChildRef,
-                                targetLevel, currentLevel + 1 );
-      }
 
-      else
-      {
-          localRef.leftChildRef = addItemHelper( newItem, localRef.leftChildRef,
-                                                 targetLevel, currentLevel + 1 );
-      }
-      return localRef;
+
+     return null;
    }
 
     /**
@@ -135,6 +158,7 @@ public class BT_HeapClass
    public NodeClass removeItem()
    {
        // TODO: Implement this
+       return null;
    }
    private void removeLastNode( NodeClass localRef, int targetLevel, int currentLevel )
    {
@@ -215,164 +239,182 @@ public class BT_HeapClass
    }
 
     /**
-     * Displays text-graphical representation of oen level/line of the
-     * binary tree
-     * @param workingNode NodeClass reference at the current recursion level
-     * @param nodeHeight integer height of tree plus two for current height
-     *                   of nodes, including lowermost null children
+     * Displays text-graphical representation of one level/line
+     * of the binary tree
+     *
+     * @param workingNode NodeClass reference at current recursion level
+     *
+     * @param nodeHeight integer height of tree plus two
+     * for current height of nodes, including lowermost null children
+     *
      * @param displayLevel integer level of tree at which the current line
-     *                     of display is to be presented
+     * of display is to be presented
+     *
      * @param workingLevel integer current level during recursive actions
      */
-   private void displayAtTreeLevel( NodeClass workingNode, int nodeHeight,
-                                    int displayLevel, int workingLevel )
-   {
-       char charOut = workingNode.dataValue;
+    private void displayAtTreeLevel( NodeClass workingNode, int nodeHeight,
+                                     int displayLevel, int workingLevel )
+    {
+        char charOut = workingNode.dataValue;
 
-       if( workingLevel == displayLevel )
-       {
-           displayValue( charOut, nodeHeight, workingLevel );
+        if( workingLevel == displayLevel )
+        {
+            displayValue( charOut, nodeHeight, workingLevel );
 
-           return;
-       }
+            return;
+        }
 
-       if( workingNode.leftChildRef != null )
-       {
-          displayAtTreeLevel( workingNode.leftChildRef, nodeHeight,
-                              displayLevel, workingLevel + 1 );
-       }
+        if( workingNode.leftChildRef != null )
+        {
+            displayAtTreeLevel( workingNode.leftChildRef, nodeHeight,
+                displayLevel, workingLevel + 1 );
+        }
 
-       else
-       {
-           displayEmptyNodeSpaces( nodeHeight, displayLevel, workingLevel + 1 );
-       }
+        else
+        {
+            displayEmptyNodeSpaces( nodeHeight, displayLevel, workingLevel + 1 );
+        }
 
-       if( workingNode.rightChildRef != null )
-       {
-           displayAtTreeLevel( workingNode.rightChildRef, nodeHeight,
-                               displayLevel, workingLevel + 1 );
-       }
+        if( workingNode.rightChildRef != null )
+        {
+            displayAtTreeLevel( workingNode.rightChildRef, nodeHeight,
+                displayLevel, workingLevel + 1 );
+        }
 
-       else
-       {
-           displayEmptyNodeSpaces( nodeHeight, displayLevel, workingLevel + 1 );
-       }
-   }
+        else
+        {
+            displayEmptyNodeSpaces( nodeHeight, displayLevel, workingLevel + 1 );
+        }
+    }
 
     /**
      * Test for empty tree
+     *
      * @return Boolean result of test
      */
-   public boolean isEmpty()
-   {
-       return heapHead == null;
-   }
+    public boolean isEmpty()
+    {
+        return heapHead == null;
+    }
 
     /**
-     * Local recursive method to display a specified number of a
-     * specified character
+     * Local recursive method to display a specified number
+     * of a specified character
+     *
      * @param numChars integer number of characters to display
-     * @param outChar character do display
+     *
+     * @param outChar character to display
      */
-   private void displayChars( int numChars, char outChar )
-   {
-      if( numChars > 0 )
-      {
-          System.out.print( outChar );
+    private void displayChars( int numChars, char outChar )
+    {
+        if( numChars > 0 )
+        {
+            System.out.print( outChar );
 
-          displayChars( numChars - 1, outChar );
-      }
-   }
+            displayChars( numChars - 1, outChar );
+        }
+    }
 
     /**
      * Local recursive method to calculate exponentiation
      * with integers
+     *
      * @param base base of exponentiation
+     *
      * @param exponent exponent of exponentiation
+     *
      * @return result of exponentiation calculation
      */
-   private int toPower( int base, int exponent )
-   {
-       if( exponent > 0 )
-       {
-           return toPower( base, exponent - 1 ) * base;
-       }
-       return 1;
-   }
+    private int toPower( int base, int exponent )
+    {
+        if( exponent > 0 )
+        {
+            return toPower( base, exponent - 1 ) * base;
+        }
+
+        return 1;
+    }
 
     /**
-     * DIsplays text-graphical representation of Binary Tree
+     * Displays text-graphical representation of Binary Tree
+     *
      */
-   public void displayTreeStructure()
-   {
-      int displayLevel, nodeHeight = findLeftHeight( heapHead ) + 2;
-      int workingLevel = 1;
+    public void displayTreeStructure()
+    {
+        int displayLevel, nodeHeight = findLeftHeight( heapHead ) + 2;
+        int workingLevel = 1;
 
-      if( heapHead != null )
-      {
-          for( displayLevel = 1; displayLevel <= nodeHeight; displayLevel++ )
-          {
-             rowStartFlag = true;
+        if( heapHead != null )
+        {
+            for( displayLevel = 1; displayLevel <= nodeHeight; displayLevel++ )
+            {
+                rowStartFlag = true;
 
-             displayAtTreeLevel( heapHead, nodeHeight,
-                                displayLevel, workingLevel );
-          }
+                displayAtTreeLevel( heapHead, nodeHeight,
+                    displayLevel, workingLevel );
 
-          System.out.println();
-      }
+                System.out.println();
+            }
+        }
 
-      else
-      {
-        System.out.println( "\nEmpty Tree - No Display" );
-      }
-
-   }
+        else
+        {
+            System.out.println( "\nEmpty Tree - No Display");
+        }
+    }
 
     /**
-     * Method used to display a character along with calculated
-     * leading spaces
-     * <p> Note: Used in displayAtTreeLevel and displayEmptyNodeSpaces
+     * Method used to display a character
+     * along with calculated leading spaces
+     * <p>
+     * Note: used in displayAtTreeLevel and displayEmptyNodeSpaces
+     *
      * @param data data value to display, either letter or color data
-     * @param nodeHeight height of nodes, including lowermost null children
+     *
+     * @param nodeHeight height of tree plus two
+     * for current height of nodes, including lowermost null children
+     *
      * @param workingLevel current level during recursive actions
      */
-   private void displayValue( char data, int nodeHeight, int workingLevel )
-   {
-      int leadingSpaces;
+    private void displayValue( char data, int nodeHeight, int workingLevel )
+    {
+        int leadingSpaces;
 
-      if( rowStartFlag )
-      {
-          leadingSpaces = toPower( 2, nodeHeight - workingLevel );
+        if( rowStartFlag )
+        {
+            leadingSpaces = toPower( 2, nodeHeight - workingLevel );
 
-          rowStartFlag = false;
-      }
+            rowStartFlag = false;
+        }
 
-      else
-      {
-          leadingSpaces = toPower( 2, nodeHeight - workingLevel + 1 );
-      }
+        else
+        {
+            leadingSpaces = toPower( 2, nodeHeight - workingLevel + 1 ) - 1;
+        }
 
-      displayChars( leadingSpaces, SPACE );
+        displayChars( leadingSpaces, SPACE );
 
-      System.out.print( data );
-
-   }
+        System.out.print( data );
+    }
 
     /**
      * Method that displays null or blank nodes
      * for a tree at null locations
+     * <p>
+     * Note: used by displayAtTreeLevel
      *
-     * <p> Note: used by displayAtTreeLevel
-     * @param nodeHeight height of tree plus two for
-     *                   current height of nodes, including lowermost
-     *                   null children
-     * @param displayLevel level of the tree at which the display will be applied
-     * @param workingLevel level of tree just below non-null node
-     *                     at which method is currently working
+     * @param nodeHeight height of tree plus two
+     * for current height of nodes, including lowermost null children
+     *
+     * @param displayLevel level of the tree at which
+     * the display will be applied
+     *
+     * @param workingLevel level of tree just below
+     * non-null node at which method is currently working
      */
-   private void displayEmptyNodeSpaces( int nodeHeight,
-                                        int displayLevel, int workingLevel )
-   {
+    private void displayEmptyNodeSpaces( int nodeHeight,
+                                         int displayLevel, int workingLevel )
+    {
         int nodesToDisplay = toPower( 2, displayLevel - workingLevel );
         char charOut = SPACE;
 
@@ -387,14 +429,14 @@ public class BT_HeapClass
 
             nodesToDisplay--;
         }
-   }
+    }
 
     /**
-     * Clears heap tree
+     * clears heap tree
      */
-   public void clearTree()
-   {
-      heapHead = null;
-   }
-}
+    public void clearTree()
+    {
+        heapHead = null;
+    }
 
+}
