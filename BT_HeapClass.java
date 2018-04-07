@@ -320,7 +320,7 @@ public class BT_HeapClass
        {
            return first;
        }
-       
+
        return first.dataValue > second.dataValue ? first : second;
    }
 
@@ -340,18 +340,8 @@ public class BT_HeapClass
         {
             return;
         }
-        else if( currentNodeRef.leftChildRef == null )
-        {
-            maxChildValue = currentNodeRef.rightChildRef;
-        }
-        else if( currentNodeRef.rightChildRef == null )
-        {
-            maxChildValue = currentNodeRef.leftChildRef;
-        }
-        else
-        {
-            maxChildValue = getMaxNodeValue( currentNodeRef.leftChildRef, currentNodeRef.rightChildRef );
-        }
+
+        maxChildValue = getMaxNodeValue( currentNodeRef.leftChildRef, currentNodeRef.rightChildRef );
 
         if( currentNodeRef.dataValue < maxChildValue.dataValue )
         {
