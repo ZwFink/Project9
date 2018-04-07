@@ -95,6 +95,9 @@ public class BT_HeapClass
                                     targetLevel, 0 );
        }
 
+       // recreate the heap after inserting the item
+       bubbleUpNodeHeap( newNode );
+
    }
 
     /**
@@ -174,7 +177,54 @@ public class BT_HeapClass
      */
    private void bubbleUpNodeHeap( NodeClass currentNodeRef )
    {
-      // TODO: Implement this method
+       NodeClass maxValue;
+       char temp;
+
+
+       // takes care of first node being added to tree
+       if( currentNodeRef.leftChildRef == null &&
+           currentNodeRef.rightChildRef == null )
+       {
+           return;
+       }
+       else if( currentNodeRef.leftChildRef == null )
+       {
+           maxValue = currentNodeRef.rightChildRef;
+       }
+
+       else if( currentNodeRef.rightChildRef == null )
+       {
+           maxValue = currentNodeRef.leftChildRef;
+       }
+
+       else
+       {
+
+        maxValue = getMaxNodeValue( currentNodeRef.leftChildRef,
+                           currentNodeRef.rightChildRef );
+        }
+
+
+       if( maxValue.dataValue > currentNodeRef.dataValue )
+       {
+          temp = maxValue.dataValue;
+          maxValue.dataValue = currentNodeRef.dataValue;
+          currentNodeRef.dataValue = temp;
+       }
+
+       bubbleUpNodeHeap( currentNodeRef.parentRef );
+
+   }
+
+    /**
+     * Returns the greater of the values stored in each node
+     * @param first NodeClass to be compared to secondChar
+     * @param first NodeClass to be compared to firstChar
+     * @return NodeData object with the greater data value
+     */
+   public NodeClass getMaxNodeValue( NodeClass first, NodeClass second )
+   {
+       return first.dataValue > second.dataValue ? first : second;
    }
 
     /**
