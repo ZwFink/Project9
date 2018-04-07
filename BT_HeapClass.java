@@ -150,7 +150,7 @@ public class BT_HeapClass
 
 
 
-     return null;
+     return rightChildResult;
    }
 
     /**
