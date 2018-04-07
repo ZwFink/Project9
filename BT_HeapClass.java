@@ -163,10 +163,13 @@ public class BT_HeapClass
    {
        int leftHeight;
        int rightHeight;
-
        int targetLevel;
 
        char returnVal;
+
+       // the last node in the tree, the one that is to be
+       // removed
+       NodeClass lastNode;
 
        if( heapHead == null )
        {
@@ -193,7 +196,13 @@ public class BT_HeapClass
        {
            targetLevel = rightHeight;
        }
-       return removeLastNode( heapHead, targetLevel, -1 );
+
+       // swap the data of current heapHead and the node returned by removeLastNode
+       lastNode = removeLastNode( heapHead, targetLevel, -1 );
+       swapNodeData( heapHead, lastNode );
+
+       trickleDownNodeHeap( heapHead );
+       return lastNode;
    }
 
     /**
@@ -253,7 +262,6 @@ public class BT_HeapClass
    private void bubbleUpNodeHeap( NodeClass currentNodeRef )
    {
        NodeClass maxValue = null;
-       char temp;
 
        if( currentNodeRef == null )
        {
