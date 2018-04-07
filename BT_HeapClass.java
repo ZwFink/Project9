@@ -162,8 +162,19 @@ public class BT_HeapClass
      */
    public NodeClass removeItem()
    {
-       // TODO: Implement this
-       return null;
+       int leftHeight = findLeftHeight( heapHead );
+       int rightHeight = findRightHeight( heapHead );
+       int targetLevel;
+
+       if( leftHeight == rightHeight )
+       {
+          targetLevel = leftHeight - 1;
+       }
+       else
+       {
+           targetLevel = rightHeight;
+       }
+       return removeLastNode( heapHead, targetLevel, -1 );
    }
 
     /**
@@ -179,7 +190,38 @@ public class BT_HeapClass
      */
    private NodeClass removeLastNode(NodeClass localRef, int targetLevel, int currentLevel )
    {
-      // TODO: Implement code for removeLastNode
+       if( currentLevel + 1 == targetLevel )
+       {
+           if( localRef.rightChildRef != null )
+           {
+               localRef.rightChildRef.parentRef = null;
+               localRef.rightChildRef = null;
+           }
+           else if( localRef.leftChildRef != null )
+           {
+               localRef.leftChildRef.parentRef = null;
+               localRef.leftChildRef = null;
+           }
+           else
+           {
+               return null;
+           }
+
+           return localRef;
+       }
+
+       NodeClass rightSubTree = removeLastNode( localRef.rightChildRef, targetLevel,
+                                    currentLevel + 1 );
+
+       if( rightSubTree != null )
+       {
+           return rightSubTree;
+       }
+
+       NodeClass leftSubTree = removeLastNode( localRef.leftChildRef, targetLevel,
+                                                currentLevel + 1 );
+
+       return leftSubTree;
    }
 
     /**
