@@ -274,23 +274,9 @@ public class BT_HeapClass
            bubbleUpNodeHeap( currentNodeRef.parentRef );
            return;
        }
-       else if( currentNodeRef.leftChildRef == null )
-       {
-           maxValue = currentNodeRef.rightChildRef;
-       }
-
-       else if( currentNodeRef.rightChildRef == null )
-       {
-           maxValue = currentNodeRef.leftChildRef;
-       }
-
-       else
-       {
 
         maxValue = getMaxNodeValue( currentNodeRef.leftChildRef,
                            currentNodeRef.rightChildRef );
-       }
-
 
        if( maxValue.dataValue > currentNodeRef.dataValue )
        {
@@ -306,6 +292,8 @@ public class BT_HeapClass
 
     /**
      * Returns the greater of the values stored in each node
+     * <p> Note: Handles case where either first or second are
+     *  null nodes
      * @param first NodeClass to be compared to secondChar
      * @param first NodeClass to be compared to firstChar
      * @return NodeData object with the greater data value
@@ -341,6 +329,7 @@ public class BT_HeapClass
             return;
         }
 
+        // getMaxNodeValue handles left or right child null cases
         maxChildValue = getMaxNodeValue( currentNodeRef.leftChildRef, currentNodeRef.rightChildRef );
 
         if( currentNodeRef.dataValue < maxChildValue.dataValue )
