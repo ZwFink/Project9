@@ -1,6 +1,8 @@
 package p9_Package;
 
 
+import javax.xml.soap.Node;
+
 /**
  * Class uses a node-based max heap data structure to
  * manage priority of characters
@@ -163,7 +165,19 @@ public class BT_HeapClass
        // TODO: Implement this
        return null;
    }
-   private void removeLastNode( NodeClass localRef, int targetLevel, int currentLevel )
+
+    /**
+     * Recursive helper for removing item from heap
+     * @param localRef NodeClass reference at given
+     *                 recursion level
+     * @param targetLevel Integer value representing the level
+     *                    under which the item should be added
+     * @param currentLevel Integer value representing the current
+     *                     lvel of the recursive method at a given call
+     * @return NodeClass reference returns item removed, and
+     *         used for recursion
+     */
+   private NodeClass removeLastNode(NodeClass localRef, int targetLevel, int currentLevel )
    {
       // TODO: Implement code for removeLastNode
    }
