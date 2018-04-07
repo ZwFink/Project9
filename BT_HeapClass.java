@@ -312,6 +312,15 @@ public class BT_HeapClass
      */
    private NodeClass getMaxNodeValue( NodeClass first, NodeClass second )
    {
+       if( first == null )
+       {
+           return second;
+       }
+       else if( second == null )
+       {
+           return first;
+       }
+       
        return first.dataValue > second.dataValue ? first : second;
    }
 
@@ -325,6 +334,7 @@ public class BT_HeapClass
    private void trickleDownNodeHeap( NodeClass currentNodeRef )
    {
        NodeClass maxChildValue;
+
         if( currentNodeRef.leftChildRef == null &&
             currentNodeRef.rightChildRef == null )
         {
