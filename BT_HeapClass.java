@@ -324,7 +324,31 @@ public class BT_HeapClass
      */
    private void trickleDownNodeHeap( NodeClass currentNodeRef )
    {
+       NodeClass maxChildValue;
+        if( currentNodeRef.leftChildRef == null &&
+            currentNodeRef.rightChildRef == null )
+        {
+            return;
+        }
+        else if( currentNodeRef.leftChildRef == null )
+        {
+            maxChildValue = currentNodeRef.rightChildRef;
+        }
+        else if( currentNodeRef.rightChildRef == null )
+        {
+            maxChildValue = currentNodeRef.leftChildRef;
+        }
+        else
+        {
+            maxChildValue = getMaxNodeValue( currentNodeRef.leftChildRef, currentNodeRef.rightChildRef );
+        }
 
+        if( currentNodeRef.dataValue < maxChildValue.dataValue )
+        {
+            swapNodeData( currentNodeRef, maxChildValue );
+        }
+
+        trickleDownNodeHeap( maxChildValue );
    }
 
     /**
