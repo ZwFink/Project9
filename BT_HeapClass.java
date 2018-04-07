@@ -211,9 +211,7 @@ public class BT_HeapClass
 
        if( maxValue.dataValue > currentNodeRef.dataValue )
        {
-          temp = maxValue.dataValue;
-          maxValue.dataValue = currentNodeRef.dataValue;
-          currentNodeRef.dataValue = temp;
+            swapNodeData( currentNodeRef, maxValue );
        }
 
        if( currentNodeRef.parentRef != null )
