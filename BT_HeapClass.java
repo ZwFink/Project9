@@ -1,7 +1,6 @@
 package p9_Package;
 
 
-import javax.xml.soap.Node;
 
 /**
  * Class uses a node-based max heap data structure to
@@ -162,9 +161,29 @@ public class BT_HeapClass
      */
    public NodeClass removeItem()
    {
-       int leftHeight = findLeftHeight( heapHead );
-       int rightHeight = findRightHeight( heapHead );
+       int leftHeight;
+       int rightHeight;
+
        int targetLevel;
+
+       char returnVal;
+
+       if( heapHead == null )
+       {
+           return null;
+       }
+
+       if( heapHead.leftChildRef == null &&
+           heapHead.rightChildRef == null )
+       {
+           returnVal = heapHead.dataValue;
+           heapHead = null;
+           return new NodeClass( returnVal );
+       }
+
+      leftHeight = findLeftHeight( heapHead );
+      rightHeight = findRightHeight( heapHead );
+      returnVal = heapHead.dataValue;
 
        if( leftHeight == rightHeight )
        {
@@ -184,7 +203,7 @@ public class BT_HeapClass
      * @param targetLevel Integer value representing the level
      *                    under which the item should be added
      * @param currentLevel Integer value representing the current
-     *                     lvel of the recursive method at a given call
+     *                     level of the recursive method at a given call
      * @return NodeClass reference returns item removed, and
      *         used for recursion
      */
