@@ -203,6 +203,11 @@ public class BT_HeapClass
        lastNode = removeLastNode( heapHead, targetLevel, -1 );
        swapNodeData( heapHead, lastNode );
 
+       if( viewShiftFlag )
+       {
+           System.out.println( "Shifting after the removal of " + heapHead.dataValue );
+           displayTreeStructure();
+       }
        trickleDownNodeHeap( heapHead );
        return lastNode;
    }
@@ -263,36 +268,18 @@ public class BT_HeapClass
      */
    private void bubbleUpNodeHeap( NodeClass currentNodeRef )
    {
-       NodeClass maxValue = null;
-
-       if( currentNodeRef == null )
-       {
-           return;
-       }
-
-       if( currentNodeRef.leftChildRef == null &&
-           currentNodeRef.rightChildRef == null )
-       {
-           bubbleUpNodeHeap( currentNodeRef.parentRef );
-           return;
-       }
-
-        maxValue = getMaxNodeValue( currentNodeRef.leftChildRef,
-                           currentNodeRef.rightChildRef );
-
-       if( maxValue.dataValue > currentNodeRef.dataValue )
-       {
-            swapNodeData( currentNodeRef, maxValue );
-           if( viewShiftFlag )
-           {
-               displayTreeStructure();
-           }
-       }
-
-       if( currentNodeRef.parentRef != null )
-       {
-       bubbleUpNodeHeap( currentNodeRef.parentRef );
-       }
+      if( currentNodeRef != heapHead )
+      {
+          if( currentNodeRef.dataValue > currentNodeRef.parentRef.dataValue )
+          {
+              swapNodeData( currentNodeRef, currentNodeRef.parentRef );
+              bubbleUpNodeHeap( currentNodeRef.parentRef );
+              if( viewShiftFlag )
+              {
+                  displayTreeStructure();
+              }
+          }
+      }
 
    }
 
@@ -341,6 +328,10 @@ public class BT_HeapClass
         if( currentNodeRef.dataValue < maxChildValue.dataValue )
         {
             swapNodeData( currentNodeRef, maxChildValue );
+            if( viewShiftFlag )
+            {
+                displayTreeStructure();
+            }
         }
 
         trickleDownNodeHeap( maxChildValue );
