@@ -97,8 +97,13 @@ public class BT_HeapClass
        }
 
        // recreate the heap after inserting the item
-       bubbleUpNodeHeap( newNode );
+       if( viewShiftFlag )
+       {
+           System.out.println( "Shifting after addition of " + dataChar );
+           displayTreeStructure();
+       }
 
+       bubbleUpNodeHeap( newNode );
    }
 
     /**
@@ -146,9 +151,6 @@ public class BT_HeapClass
       }
       NodeClass rightChildResult = addItemHelper( newItem, localRef.rightChildRef,
                      targetLevel, currentLevel + 1 );
-
-
-
 
      return rightChildResult;
    }
@@ -281,6 +283,10 @@ public class BT_HeapClass
        if( maxValue.dataValue > currentNodeRef.dataValue )
        {
             swapNodeData( currentNodeRef, maxValue );
+           if( viewShiftFlag )
+           {
+               displayTreeStructure();
+           }
        }
 
        if( currentNodeRef.parentRef != null )
