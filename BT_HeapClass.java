@@ -251,7 +251,9 @@ public class BT_HeapClass
      */
    private void swapNodeData( NodeClass oneNode, NodeClass otherNode )
    {
-      // TODO: Implement this
+       char temp = oneNode.dataValue;
+       oneNode.dataValue = otherNode.dataValue;
+       otherNode.dataValue = temp;
    }
 
     /**
