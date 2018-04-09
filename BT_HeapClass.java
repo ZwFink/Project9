@@ -167,7 +167,7 @@ public class BT_HeapClass
        int rightHeight;
        int targetLevel;
 
-       char returnVal;
+       NodeClass returnVal;
 
        // the last node in the tree, the one that is to be
        // removed
@@ -181,35 +181,28 @@ public class BT_HeapClass
        if( heapHead.leftChildRef == null &&
            heapHead.rightChildRef == null )
        {
-           returnVal = heapHead.dataValue;
+            returnVal = heapHead;
            heapHead = null;
-           return new NodeClass( returnVal );
+           return returnVal;
        }
 
       leftHeight = findLeftHeight( heapHead );
-      rightHeight = findRightHeight( heapHead );
-      returnVal = heapHead.dataValue;
 
-       if( leftHeight == rightHeight )
-       {
-          targetLevel = leftHeight - 1;
-       }
-       else
-       {
-           targetLevel = rightHeight;
-       }
+      targetLevel = leftHeight;
 
        // swap the data of current heapHead and the node returned by removeLastNode
-       lastNode = removeLastNode( heapHead, targetLevel, -1 );
+       lastNode = removeLastNode( heapHead, targetLevel, 0 );
        swapNodeData( heapHead, lastNode );
 
        if( viewShiftFlag )
        {
-           System.out.println( "Shifting after the removal of " + heapHead.dataValue );
+           System.out.println( "Shifting after the removal of " + lastNode.dataValue );
            displayTreeStructure();
        }
+
        trickleDownNodeHeap( heapHead );
-       return lastNode;
+
+       return heapHead;
    }
 
     /**
@@ -225,15 +218,18 @@ public class BT_HeapClass
      */
    private NodeClass removeLastNode(NodeClass localRef, int targetLevel, int currentLevel )
    {
-       if( currentLevel + 1 == targetLevel )
+       NodeClass returnVal;
+       if( currentLevel + 1 >= targetLevel )
        {
            if( localRef.rightChildRef != null )
            {
+               returnVal = localRef.rightChildRef;
                localRef.rightChildRef.parentRef = null;
                localRef.rightChildRef = null;
            }
            else if( localRef.leftChildRef != null )
            {
+               returnVal = localRef.leftChildRef;
                localRef.leftChildRef.parentRef = null;
                localRef.leftChildRef = null;
            }
@@ -242,7 +238,7 @@ public class BT_HeapClass
                return null;
            }
 
-           return localRef;
+           return returnVal;
        }
 
        NodeClass rightSubTree = removeLastNode( localRef.rightChildRef, targetLevel,
@@ -316,7 +312,11 @@ public class BT_HeapClass
    {
        NodeClass maxChildValue;
 
-        if( currentNodeRef.leftChildRef == null &&
+       if( currentNodeRef == null )
+       {
+           return;
+       }
+       else if( currentNodeRef.leftChildRef == null &&
             currentNodeRef.rightChildRef == null )
         {
             return;
@@ -334,7 +334,7 @@ public class BT_HeapClass
             }
         }
 
-        trickleDownNodeHeap( maxChildValue );
+       trickleDownNodeHeap( maxChildValue );
    }
 
     /**
