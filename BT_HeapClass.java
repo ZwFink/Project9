@@ -78,6 +78,7 @@ public class BT_HeapClass
        if( heapHead == null )
        {
            heapHead = newNode;
+           return;
        }
 
        else
@@ -100,7 +101,6 @@ public class BT_HeapClass
        if( viewShiftFlag )
        {
            System.out.println( "Shifting after addition of " + dataChar );
-           displayTreeStructure();
        }
 
        bubbleUpNodeHeap( newNode );
@@ -164,7 +164,6 @@ public class BT_HeapClass
    public NodeClass removeItem()
    {
        int leftHeight;
-       int rightHeight;
        int targetLevel;
 
        NodeClass returnVal;
@@ -178,10 +177,10 @@ public class BT_HeapClass
            return null;
        }
 
-       if( heapHead.leftChildRef == null &&
+       else if( heapHead.leftChildRef == null &&
            heapHead.rightChildRef == null )
        {
-            returnVal = heapHead;
+           returnVal = heapHead;
            heapHead = null;
            return returnVal;
        }
@@ -197,12 +196,11 @@ public class BT_HeapClass
        if( viewShiftFlag )
        {
            System.out.println( "Shifting after the removal of " + lastNode.dataValue );
-           displayTreeStructure();
        }
 
        trickleDownNodeHeap( heapHead );
 
-       return heapHead;
+       return lastNode;
    }
 
     /**
@@ -219,7 +217,7 @@ public class BT_HeapClass
    private NodeClass removeLastNode(NodeClass localRef, int targetLevel, int currentLevel )
    {
        NodeClass returnVal;
-       if( currentLevel + 1 >= targetLevel )
+       if( currentLevel + 1 == targetLevel )
        {
            if( localRef.rightChildRef != null )
            {
@@ -312,16 +310,12 @@ public class BT_HeapClass
    {
        NodeClass maxChildValue;
 
-       if( currentNodeRef == null )
+       if( currentNodeRef == null ||
+           ( currentNodeRef.leftChildRef == null &&
+             currentNodeRef.rightChildRef == null ) )
        {
            return;
        }
-       else if( currentNodeRef.leftChildRef == null &&
-            currentNodeRef.rightChildRef == null )
-        {
-            return;
-        }
-
         // getMaxNodeValue handles left or right child null cases
         maxChildValue = getMaxNodeValue( currentNodeRef.leftChildRef, currentNodeRef.rightChildRef );
 
@@ -387,6 +381,7 @@ public class BT_HeapClass
 
        return 1 + findRightHeight(localRoot.rightChildRef);
    }
+
 
     /**
      * Displays text-graphical representation of one level/line
@@ -590,3 +585,4 @@ public class BT_HeapClass
     }
 
 }
+
