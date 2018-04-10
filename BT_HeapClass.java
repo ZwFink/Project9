@@ -193,12 +193,14 @@ public class BT_HeapClass
        lastNode = removeLastNode( heapHead, targetLevel, 0 );
        swapNodeData( heapHead, lastNode );
 
+
+
+       trickleDownNodeHeap( heapHead );
+
        if( viewShiftFlag )
        {
            System.out.println( "Shifting after the removal of " + lastNode.dataValue );
        }
-
-       trickleDownNodeHeap( heapHead );
 
        return lastNode;
    }
@@ -267,11 +269,12 @@ public class BT_HeapClass
           if( currentNodeRef.dataValue > currentNodeRef.parentRef.dataValue )
           {
               swapNodeData( currentNodeRef, currentNodeRef.parentRef );
-              bubbleUpNodeHeap( currentNodeRef.parentRef );
               if( viewShiftFlag )
               {
                   displayTreeStructure();
               }
+              bubbleUpNodeHeap( currentNodeRef.parentRef );
+
           }
       }
 
